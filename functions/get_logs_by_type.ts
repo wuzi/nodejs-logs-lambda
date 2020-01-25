@@ -10,10 +10,12 @@ module.exports.getByType = (
 ) => {
   const { queryStringParameters } = event
 
-  if (!queryStringParameters || queryStringParameters.type) {
+  if (!queryStringParameters || !queryStringParameters.type) {
     const response = {
       statusCode: 400,
-      message: 'Query string paramter "type" is required'
+      body: JSON.stringify({
+        message: 'Query string paramter "type" is required'
+      })
     }
     callback(null, response)
     return
@@ -34,7 +36,7 @@ module.exports.getByType = (
     if (err) {
       const response = {
         statusCode: 500,
-        message: err.message
+        body: JSON.stringify(err)
       }
       callback(null, response)
     } else {

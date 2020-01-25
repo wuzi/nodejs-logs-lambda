@@ -11,7 +11,9 @@ module.exports.create = (
   if (!event.body) {
     const response = {
       statusCode: 400,
-      message: 'Invalid log format'
+      body: JSON.stringify({
+        message: '"body" is required'
+      })
     }
     callback(null, response)
     return
@@ -19,10 +21,10 @@ module.exports.create = (
 
   const body = JSON.parse(event.body)
   const params: SQS.SendMessageParams = {
-    MessageBody: {
+    MessageBody: JSON.stringify({
       ...body,
       timestamp: new Date().getTime()
-    },
+    }),
     QueueUrl: process.env.QUEUE_URL
   }
 
