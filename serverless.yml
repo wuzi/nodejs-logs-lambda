@@ -15,6 +15,7 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
+        - dynamodb:Scan
         - dynamodb:PutItem
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
     - Effect: Allow
@@ -29,6 +30,13 @@ functions:
       - http:
           path: create_log_entry
           method: post
+          cors: true
+  get:
+    handler: functions/get_logs_by_origin.get
+    events:
+      - http:
+          path: get_logs_by_origin
+          method: get
           cors: true
   save:
     handler: functions/save_log.save
