@@ -35,9 +35,7 @@ module.exports.create = (
   if (error) {
     const response = {
       statusCode: 400,
-      body: JSON.stringify({
-        message: error.details
-      })
+      body: JSON.stringify(error.details)
     }
     callback(null, response)
     return
