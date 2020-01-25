@@ -4,11 +4,19 @@ import Log from '../models/log'
 
 const queue = new SQS()
 
+/**
+ * This functions writes a new log in the SQS Queue
+ * 
+ * @param {APIGatewayProxyEvent} event Data received from the lambda
+ * @param {Context} context Current context of the function
+ * @param {Callback} callback Callback to return response or error
+ */
 module.exports.create = (
   event: APIGatewayProxyEvent,
   context: Context,
   callback: Callback
 ) => {
+  // Check if body is present
   if (!event.body) {
     const response = {
       statusCode: 400,
@@ -23,6 +31,7 @@ module.exports.create = (
   const body = JSON.parse(event.body)
   const { error } = Log.validate(body)
 
+  // Check if log is valid
   if (error) {
     const response = {
       statusCode: 400,
@@ -34,6 +43,7 @@ module.exports.create = (
     return
   }
 
+  // Create message to send to SQS
   const params: SQS.SendMessageParams = {
     MessageBody: JSON.stringify({
       ...body,
@@ -42,6 +52,7 @@ module.exports.create = (
     QueueUrl: process.env.QUEUE_URL
   }
 
+  // Send message to SQS
   queue.sendMessage(params, function (err, data) {
     if (err) {
       const response = {
