@@ -4,7 +4,7 @@ import { DynamoDB } from 'aws-sdk'
 
 const dynamoDb = new DynamoDB.DocumentClient()
 
-module.exports.getByOrigin = (
+module.exports.getByType = (
   event: any,
   context: any,
   callback: (arg0: any, arg1: any) => void
@@ -14,9 +14,12 @@ module.exports.getByOrigin = (
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
     ExpressionAttributeValues: {
-      ":origin": queryStringParameters.origin
+      ":logType": queryStringParameters.type
     },
-    FilterExpression: "origin = :origin"
+    ExpressionAttributeNames: {
+      "#logType": "type"
+    },
+    FilterExpression: "#logType = :logType"
   };
 
   dynamoDb.scan(params, function (err, data) {

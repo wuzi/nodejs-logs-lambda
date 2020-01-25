@@ -31,11 +31,18 @@ functions:
           path: create_log_entry
           method: post
           cors: true
-  get:
-    handler: functions/get_logs_by_origin.get
+  getByOrigin:
+    handler: functions/get_logs_by_origin.getByOrigin
     events:
       - http:
           path: get_logs_by_origin
+          method: get
+          cors: true
+  getByType:
+    handler: functions/get_logs_by_type.getByType
+    events:
+      - http:
+          path: get_logs_by_type
           method: get
           cors: true
   save:
