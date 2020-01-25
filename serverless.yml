@@ -35,6 +35,15 @@ functions:
           path: create_log_entry
           method: post
           cors: true
+  save:
+    handler: functions/save_log.save
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - LogQueue
+              - Arn
+          batchSize: 1
 
 resources:
   Resources:
