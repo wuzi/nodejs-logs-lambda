@@ -10,8 +10,12 @@ module.exports.create = (
   context: Context,
   callback: Callback
 ) => {
+  const body = JSON.parse(event.body)
   const params: SQS.SendMessageParams = {
-    MessageBody: event.body,
+    MessageBody: {
+      ...body,
+      timestamp: new Date().getTime()
+    },
     QueueUrl: process.env.QUEUE_URL
   }
 
