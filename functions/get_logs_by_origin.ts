@@ -25,7 +25,7 @@ module.exports.getByOrigin = (
       ":origin": queryStringParameters.origin
     },
     FilterExpression: "origin = :origin"
-  };
+  }
 
   dynamoDb.scan(params, function (err, data) {
     if (err) {

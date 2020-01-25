@@ -28,7 +28,7 @@ module.exports.getByType = (
       "#logType": "type"
     },
     FilterExpression: "#logType = :logType"
-  };
+  }
 
   dynamoDb.scan(params, function (err, data) {
     if (err) {
