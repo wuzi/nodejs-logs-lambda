@@ -1,5 +1,6 @@
 import { APIGatewayProxyEvent, Callback, Context } from 'aws-lambda'
 import { SQS } from 'aws-sdk'
+import Log from '../models/log'
 
 const queue = new SQS()
 
@@ -11,7 +12,17 @@ module.exports.create = (
   if (!event.body) {
     const response = {
       statusCode: 400,
-      message: 'Invalid log format'
+      message: 'Missing "body" of request'
+    }
+    callback(null, response)
+    return
+  }
+
+  const { error } = Log.validate(event.body)
+  if (error) {
+    const response = {
+      statusCode: 400,
+      message: JSON.stringify(error.details)
     }
     callback(null, response)
     return
