@@ -1,5 +1,3 @@
-'use strict'
-
 import { APIGatewayProxyEvent, Callback, Context } from 'aws-lambda'
 import { SQS } from 'aws-sdk'
 
@@ -10,6 +8,15 @@ module.exports.create = (
   context: Context,
   callback: Callback
 ) => {
+  if (!event.body) {
+    const response = {
+      statusCode: 400,
+      message: 'Invalid log format'
+    }
+    callback(null, response)
+    return
+  }
+
   const body = JSON.parse(event.body)
   const params: SQS.SendMessageParams = {
     MessageBody: {

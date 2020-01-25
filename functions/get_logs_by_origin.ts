@@ -1,5 +1,3 @@
-'use strict'
-
 import { APIGatewayProxyEvent, Callback, Context } from 'aws-lambda'
 import { DynamoDB } from 'aws-sdk'
 
@@ -12,8 +10,17 @@ module.exports.getByOrigin = (
 ) => {
   const { queryStringParameters } = event
 
+  if (!queryStringParameters || queryStringParameters.origin) {
+    const response = {
+      statusCode: 400,
+      message: 'Query string paramter "origin" is required'
+    }
+    callback(null, response)
+    return
+  }
+
   const params = {
-    TableName: process.env.DYNAMODB_TABLE,
+    TableName: process.env.DYNAMODB_TABLE as string,
     ExpressionAttributeValues: {
       ":origin": queryStringParameters.origin
     },

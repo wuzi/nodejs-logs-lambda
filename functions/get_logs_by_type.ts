@@ -1,5 +1,3 @@
-'use strict'
-
 import { APIGatewayProxyEvent, Callback, Context } from 'aws-lambda'
 import { DynamoDB } from 'aws-sdk'
 
@@ -12,8 +10,17 @@ module.exports.getByType = (
 ) => {
   const { queryStringParameters } = event
 
+  if (!queryStringParameters || queryStringParameters.type) {
+    const response = {
+      statusCode: 400,
+      message: 'Query string paramter "type" is required'
+    }
+    callback(null, response)
+    return
+  }
+
   const params = {
-    TableName: process.env.DYNAMODB_TABLE,
+    TableName: process.env.DYNAMODB_TABLE as string,
     ExpressionAttributeValues: {
       ":logType": queryStringParameters.type
     },

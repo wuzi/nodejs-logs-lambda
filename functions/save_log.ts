@@ -1,5 +1,3 @@
-'use strict'
-
 import { Callback, Context, SQSEvent } from 'aws-lambda'
 import { DynamoDB } from 'aws-sdk'
 
@@ -14,7 +12,7 @@ module.exports.save = (
     const body = JSON.parse(record.body)
 
     const params = {
-      TableName: process.env.DYNAMODB_TABLE,
+      TableName: process.env.DYNAMODB_TABLE as string,
       Item: {
         id: record.messageId,
         ...body
@@ -26,7 +24,7 @@ module.exports.save = (
         console.error(error)
       }
 
-      context.done(null, '')
+      context.done(undefined, '')
     })
   }
 }
