@@ -1,13 +1,14 @@
 'use strict'
 
+import { Callback, Context, SQSEvent } from 'aws-lambda'
 import { DynamoDB } from 'aws-sdk'
 
 const dynamoDb = new DynamoDB.DocumentClient()
 
 module.exports.save = (
-  event: any,
-  context: any,
-  callback: (arg0: any, arg1: any) => void
+  event: SQSEvent,
+  context: Context,
+  callback: Callback
 ) => {
   for (const record of event.Records) {
     const body = JSON.parse(record.body)

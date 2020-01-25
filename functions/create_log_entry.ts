@@ -1,13 +1,14 @@
 'use strict'
 
+import { APIGatewayProxyEvent, Callback, Context } from 'aws-lambda'
 import { SQS } from 'aws-sdk'
 
 const queue = new SQS()
 
 module.exports.create = (
-  event: any,
-  context: any,
-  callback: (arg0: any, arg1: any) => void
+  event: APIGatewayProxyEvent,
+  context: Context,
+  callback: Callback
 ) => {
   const params: SQS.SendMessageParams = {
     MessageBody: event.body,

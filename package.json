@@ -13,6 +13,7 @@
   "keywords": [],
   "license": "MIT",
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.40",
     "@types/aws-sdk": "0.0.42",
     "@types/node": "^7.0.5",
     "tslint": "^5.5.0",

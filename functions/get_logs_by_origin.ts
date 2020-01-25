@@ -1,13 +1,14 @@
 'use strict'
 
+import { APIGatewayProxyEvent, Callback, Context } from 'aws-lambda'
 import { DynamoDB } from 'aws-sdk'
 
 const dynamoDb = new DynamoDB.DocumentClient()
 
 module.exports.getByOrigin = (
-  event: any,
-  context: any,
-  callback: (arg0: any, arg1: any) => void
+  event: APIGatewayProxyEvent,
+  context: Context,
+  callback: Callback
 ) => {
   const { queryStringParameters } = event
 
