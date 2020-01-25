@@ -22,10 +22,9 @@ module.exports.getByOrigin = (
 
   dynamoDb.scan(params, function (err, data) {
     if (err) {
-      console.log(err);
-
       const response = {
-        statusCode: 500
+        statusCode: 500,
+        message: err.message
       }
       callback(null, response)
     } else {

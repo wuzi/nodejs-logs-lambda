@@ -21,12 +21,11 @@ module.exports.create = (
 
   queue.sendMessage(params, function (err, data) {
     if (err) {
-      console.log(err)
-
       const response = {
         statusCode: 500,
         body: JSON.stringify({
-          status: false
+          status: false,
+          message: err.message
         })
       }
       callback(null, response)
