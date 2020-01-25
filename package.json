@@ -18,5 +18,8 @@
     "tslint": "^5.5.0",
     "tslint-config-standard": "^6.0.1",
     "typescript": "^2.4.2"
+  },
+  "dependencies": {
+    "serverless-pseudo-parameters": "^2.5.0"
   }
 }

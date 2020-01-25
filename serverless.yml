@@ -2,12 +2,16 @@ service: sls-logs-rest-api-with-dynamodb
 
 frameworkVersion: ">=1.1.0 <2.0.0"
 
+plugins:
+  - serverless-pseudo-parameters
+
 provider:
   name: aws
   runtime: nodejs10.x
   region: us-east-1
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    QUEUE_URL: https://sqs.us-east-1.amazonaws.com/#{AWS::AccountId}/LogQueue
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -18,6 +22,10 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+    - Effect: Allow
+      Action:
+        - "sqs:SendMessage"
+      Resource: "arn:aws:sqs:${self:provider.region}:*:LogQueue"
 
 functions:
   create:
@@ -31,10 +39,20 @@ functions:
 resources:
   Resources:
     LogsDynamoDbTable:
-      Type: 'AWS::DynamoDB::Table'
+      Type: "AWS::DynamoDB::Table"
       DeletionPolicy: Retain
       Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:provider.environment.DYNAMODB_TABLE}
+    LogQueue:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: "LogQueue"
