@@ -12,23 +12,28 @@ module.exports.create = (
   if (!event.body) {
     const response = {
       statusCode: 400,
-      message: 'Missing "body" of request'
-    }
-    callback(null, response)
-    return
-  }
-
-  const { error } = Log.validate(event.body)
-  if (error) {
-    const response = {
-      statusCode: 400,
-      message: JSON.stringify(error.details)
+      body: JSON.stringify({
+        message: '"body" is required'
+      })
     }
     callback(null, response)
     return
   }
 
   const body = JSON.parse(event.body)
+  const { error } = Log.validate(body)
+
+  if (error) {
+    const response = {
+      statusCode: 400,
+      body: JSON.stringify({
+        message: error.details
+      })
+    }
+    callback(null, response)
+    return
+  }
+
   const params: SQS.SendMessageParams = {
     MessageBody: JSON.stringify({
       ...body,
