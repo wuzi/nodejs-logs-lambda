@@ -10,10 +10,12 @@ module.exports.getByOrigin = (
 ) => {
   const { queryStringParameters } = event
 
-  if (!queryStringParameters || queryStringParameters.origin) {
+  if (!queryStringParameters || !queryStringParameters.origin) {
     const response = {
       statusCode: 400,
-      message: 'Query string paramter "origin" is required'
+      body: JSON.stringify({
+        message: 'Query string paramter "origin" is required'
+      })
     }
     callback(null, response)
     return
@@ -31,7 +33,7 @@ module.exports.getByOrigin = (
     if (err) {
       const response = {
         statusCode: 500,
-        message: err.message
+        body: JSON.stringify(err)
       }
       callback(null, response)
     } else {
