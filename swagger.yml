@@ -1,0 +1,185 @@
+swagger: "2.0"
+info:
+  description: "This is the documentation for the nodejs-logs-lambda. If you have any problems or requests, please contact us on GitHub."
+  version: "1.0.0"
+  title: "nodejs-logs-lambda"
+  contact:
+    email: "noreply@wuzi.com.br"
+basePath: "/dev"
+host: "1ex6pscz86.execute-api.us-east-1.amazonaws.com"
+tags:
+  - name: "log"
+    description: "Operations about logs"
+schemes:
+- "https"
+paths:
+  /create_log_entry:
+    post:
+      tags:
+        - log
+      summary: Insert a new log in the queue
+      description: Inserts a new log in the queue
+      operationId: "createLogEntry"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: object
+            properties:
+              origin:
+                type: string
+                example: "login"
+                description: "Origin of the log"
+              type:
+                type: string
+                example: "error"
+                description: "Type of the log"
+              message:
+                type: string
+                example: "Invalid password"
+                description: "Message of the log"
+              params:
+                type: object 
+                description: "Params of the log"
+            required:
+              - origin
+              - type
+              - message
+      responses:
+        200:
+          schema:
+            type: object
+            properties:
+              status:
+                type: boolean
+                example: true
+          description: Status of the result
+        400:
+          description: Invalid body
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal error
+        502:
+          description: Internal error
+  /get_logs_by_origin:
+    get:
+      tags:
+        - log
+      summary: Get all logs by origin
+      description: Get all logs by origin
+      operationId: "getLogsByOrigin"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "query"
+          name: "origin"
+          required: true
+          type: string
+          description: Origin of the log
+      responses:
+        200:
+          description: Return an array with logs
+          schema:
+            type: object
+            properties:
+              Count:
+                type: number
+                example: 3
+                description: Number of results
+              ScannedCount:
+                type: number
+                example: 3
+                description: Number of scanned documents
+              Items:
+                $ref: '#/definitions/Log'
+        400:
+          schema:
+            $ref: '#/definitions/Error'
+          description: Missing required param
+        500:
+          description: Internal error
+        502:
+          description: Internal error
+  /get_logs_by_type:
+    get:
+      tags:
+        - log
+      summary: Get all logs by type
+      description: Get all logs by type
+      operationId: "getLogsByType"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "query"
+          name: "type"
+          required: true
+          type: string
+          description: Type of the log
+      responses:
+        200:
+          description: Return an array with logs
+          schema:
+            type: object
+            properties:
+              Count:
+                type: number
+                example: 3
+                description: Number of results
+              ScannedCount:
+                type: number
+                example: 3
+                description: Number of scanned documents
+              Items:
+                $ref: '#/definitions/Log'
+        400:
+          schema:
+            $ref: '#/definitions/Error'
+          description: Missing required param
+        500:
+          description: Internal error
+        502:
+          description: Internal error
+definitions:
+  Error:
+    type: object
+    properties:
+      message:
+        type: string
+        example: '"param" is required'
+        description: "Message of the error"
+  Log:
+    type: object
+    properties:
+      id:
+        type: string
+        example: '4d11ee4c-ac35-48c4-8631-1add5f4daaf6'
+        description: "Id of the log"
+      origin:
+        type: string
+        example: "login"
+        description: "Origin of the log"
+      type:
+        type: string
+        example: "error"
+        description: "Type of the log"
+      message:
+        type: string
+        example: "Invalid password"
+        description: "Message of the log"
+      params:
+        type: object 
+        description: "Params of the log"
+      timestamp:
+        type: number
+        example: 1579992933178
+        description: "Timestamp of the log"
