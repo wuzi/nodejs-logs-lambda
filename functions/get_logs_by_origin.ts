@@ -1,8 +1,6 @@
 import { APIGatewayProxyEvent, Callback, Context } from 'aws-lambda'
 import { DynamoDB } from 'aws-sdk'
 
-const dynamoDb = new DynamoDB.DocumentClient()
-
 /**
  * This functions fetches all logs by origin from DynamoDB
  * 
@@ -15,6 +13,8 @@ module.exports.getByOrigin = (
   context: Context,
   callback: Callback
 ) => {
+  const dynamoDb = new DynamoDB.DocumentClient() // needs to be initialised inside the function in order for the SDK method to be mocked
+
   const { queryStringParameters } = event
 
   // Checks if origin is present in query string parameters
