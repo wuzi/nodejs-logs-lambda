@@ -48,7 +48,7 @@ describe('get logs by origin from dynamodb', () => {
       })
     }
 
-    log.getByOrigin(event, context, callback)
+    await log.getByOrigin(event, context, callback)
     expect(callback).toBeCalledWith(null, response)
   })
 
@@ -64,12 +64,12 @@ describe('get logs by origin from dynamodb', () => {
       })
     }
 
-    log.getByOrigin(event, context, callback)
+    await log.getByOrigin(event, context, callback)
     expect(scanMock).not.toBeCalled()
     expect(callback).toBeCalledWith(null, response)
   })
 
-  it('should fetch records from dynamoDB', async () => {
+  it('should return 200 after fetching records from dynamoDB', async () => {
     const event = { queryStringParameters: { origin: 'log' } }
     const context = { done: jest.fn() }
     const callback = jest.fn()
@@ -82,7 +82,7 @@ describe('get logs by origin from dynamodb', () => {
       FilterExpression: 'origin = :origin'
     }
 
-    log.getByOrigin(event, context, callback)
+    await log.getByOrigin(event, context, callback)
     expect(scanMock).toBeCalledWith(params)
     expect(callback).toHaveBeenCalledWith(null, expect.objectContaining({ statusCode: 200 }))
   })

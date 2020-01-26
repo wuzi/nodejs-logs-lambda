@@ -56,7 +56,7 @@ describe('insert new log in SQS queue', () => {
       })
     }
 
-    log.create(event, context, callback)
+    await log.create(event, context, callback)
     expect(callback).toBeCalledWith(null, response)
   })
 
@@ -68,7 +68,7 @@ describe('insert new log in SQS queue', () => {
     const mockLogValidate = jest.spyOn(Log, 'validate') as jest.Mock
     mockLogValidate.mockImplementation(() => ({ error: { details: { message: 'invalid format' } } }))
 
-    log.create(event, context, callback)
+    await log.create(event, context, callback)
     expect(callback).toHaveBeenCalledWith(null, expect.objectContaining({ statusCode: 400 }))
   })
 
@@ -80,7 +80,7 @@ describe('insert new log in SQS queue', () => {
   //   const mockLogValidate = jest.spyOn(Log, 'validate') as jest.Mock
   //   mockLogValidate.mockImplementation(() => ({ value: {} }))
 
-  //   log.create(event, context, callback)
+  //   await log.create(event, context, callback)
   //   expect(callback).toHaveBeenCalledWith(null, expect.objectContaining({ statusCode: 200 }))
   // })
 })

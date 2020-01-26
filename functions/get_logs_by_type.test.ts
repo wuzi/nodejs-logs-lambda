@@ -48,7 +48,7 @@ describe('get logs by type from dynamodb', () => {
       })
     }
 
-    log.getByType(event, context, callback)
+    await log.getByType(event, context, callback)
     expect(callback).toBeCalledWith(null, response)
   })
 
@@ -64,12 +64,12 @@ describe('get logs by type from dynamodb', () => {
       })
     }
 
-    log.getByType(event, context, callback)
+    await log.getByType(event, context, callback)
     expect(scanMock).not.toBeCalled()
     expect(callback).toBeCalledWith(null, response)
   })
 
-  it('should fetch records from dynamoDB', async () => {
+  it('should return 200 after fetching records from dynamoDB', async () => {
     const event = { queryStringParameters: { type: 'log' } }
     const context = { done: jest.fn() }
     const callback = jest.fn()
@@ -85,7 +85,7 @@ describe('get logs by type from dynamodb', () => {
       FilterExpression: '#logType = :logType'
     }
 
-    log.getByType(event, context, callback)
+    await log.getByType(event, context, callback)
     expect(scanMock).toBeCalledWith(params)
     expect(callback).toHaveBeenCalledWith(null, expect.objectContaining({ statusCode: 200 }))
   })

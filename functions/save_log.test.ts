@@ -41,7 +41,7 @@ describe('save log to dynamodb', () => {
     const context = { done: jest.fn() }
     const callback = jest.fn()
 
-    log.save(event, context, callback)
+    await log.save(event, context, callback)
     expect(putMock).not.toBeCalled()
   })
 
@@ -67,7 +67,7 @@ describe('save log to dynamodb', () => {
       }
     }
 
-    log.save(event, context, callback)
+    await log.save(event, context, callback)
     expect(putMock).toBeCalledWith(params)
   })
 })

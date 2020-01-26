@@ -8,7 +8,7 @@ import { DynamoDB } from 'aws-sdk'
  * @param {Context} context Current context of the function
  * @param {Callback} callback Callback to return response or error
  */
-module.exports.save = (
+module.exports.save = async (
   event: SQSEvent,
   context: Context,
   callback: Callback
@@ -26,12 +26,11 @@ module.exports.save = (
       }
     }
 
-    dynamoDb.put(params, (error, result) => {
-      if (error) {
-        console.error(error)
-      }
-
+    try {
+      await dynamoDb.put(params).promise()
       context.done(undefined, '')
-    })
+    } catch (err) {
+      console.error(err)
+    }
   }
 }

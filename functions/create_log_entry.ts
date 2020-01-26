@@ -11,7 +11,7 @@ const queue = new SQS()
  * @param {Context} context Current context of the function
  * @param {Callback} callback Callback to return response or error
  */
-module.exports.create = (
+module.exports.create = async (
   event: APIGatewayProxyEvent,
   context: Context,
   callback: Callback
@@ -51,24 +51,23 @@ module.exports.create = (
   }
 
   // Send message to SQS
-  queue.sendMessage(params, function (err, data) {
-    if (err) {
-      const response = {
-        statusCode: 500,
-        body: JSON.stringify({
-          status: false,
-          message: err.message
-        })
-      }
-      callback(null, response)
-    } else {
-      const response = {
-        statusCode: 200,
-        body: JSON.stringify({
-          status: true
-        })
-      }
-      callback(null, response)
+  try {
+    await queue.sendMessage(params).promise()
+    const response = {
+      statusCode: 200,
+      body: JSON.stringify({
+        status: true
+      })
     }
-  })
+    callback(null, response)
+  } catch (err) {
+    const response = {
+      statusCode: 500,
+      body: JSON.stringify({
+        status: false,
+        message: err.message
+      })
+    }
+    callback(null, response)
+  }
 }

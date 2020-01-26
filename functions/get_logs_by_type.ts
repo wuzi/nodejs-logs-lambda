@@ -8,7 +8,7 @@ import { DynamoDB } from 'aws-sdk'
  * @param {Context} context Current context of the function
  * @param {Callback} callback Callback to return response or error
  */
-module.exports.getByType = (
+module.exports.getByType = async (
   event: APIGatewayProxyEvent,
   context: Context,
   callback: Callback
@@ -42,19 +42,18 @@ module.exports.getByType = (
   }
 
   // Fetch dynamodb for data
-  dynamoDb.scan(params, function (err, data) {
-    if (err) {
-      const response = {
-        statusCode: 500,
-        body: JSON.stringify(err)
-      }
-      callback(null, response)
-    } else {
-      const response = {
-        statusCode: 200,
-        body: JSON.stringify(data)
-      }
-      callback(null, response)
+  try {
+    const data = await dynamoDb.scan(params).promise()
+    const response = {
+      statusCode: 200,
+      body: JSON.stringify(data)
     }
-  })
+    callback(null, response)
+  } catch (err) {
+    const response = {
+      statusCode: 500,
+      body: JSON.stringify(err)
+    }
+    callback(null, response)
+  }
 }
