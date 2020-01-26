@@ -42,12 +42,12 @@ module.exports.create = (
   }
 
   // Create message to send to SQS
-  const params: SQS.SendMessageParams = {
+  const params: SQS.SendMessageRequest = {
     MessageBody: JSON.stringify({
       ...body,
       timestamp: new Date().getTime()
     }),
-    QueueUrl: process.env.QUEUE_URL
+    QueueUrl: process.env.QUEUE_URL as string
   }
 
   // Send message to SQS
