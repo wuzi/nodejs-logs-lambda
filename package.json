@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --coverage",
     "build": "tsc",
     "watch": "tsc -w",
     "deploy": "npm run build && sls deploy",
@@ -16,10 +16,14 @@
     "@types/aws-lambda": "^8.10.40",
     "@types/aws-sdk": "0.0.42",
     "@types/hapi__joi": "^16.0.8",
+    "@types/jest": "^24.9.1",
     "@types/node": "^7.0.5",
+    "aws-sdk-mock": "^5.0.0",
+    "jest": "^25.1.0",
+    "ts-jest": "^25.0.0",
     "tslint": "^5.5.0",
     "tslint-config-standard": "^6.0.1",
-    "typescript": "^2.4.2"
+    "typescript": "^3.7.5"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.0",

@@ -1,8 +1,6 @@
 import { Callback, Context, SQSEvent } from 'aws-lambda'
 import { DynamoDB } from 'aws-sdk'
 
-const dynamoDb = new DynamoDB.DocumentClient()
-
 /**
  * This functions listen for new messages in amazon SQS and save them in dynamoDB
  * 
@@ -15,6 +13,8 @@ module.exports.save = (
   context: Context,
   callback: Callback
 ) => {
+  const dynamoDb = new DynamoDB.DocumentClient() // needs to be initialised inside the function in order for the SDK method to be mocked
+
   for (const record of event.Records) {
     const body = JSON.parse(record.body)
 
