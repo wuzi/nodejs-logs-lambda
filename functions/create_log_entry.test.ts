@@ -69,7 +69,7 @@ describe('insert new log in SQS queue', () => {
     mockLogValidate.mockImplementation(() => ({ error: { details: { message: 'invalid format' } } }))
 
     log.create(event, context, callback)
-    expect(callback).toHaveBeenCalledWith(null, expect.objectContaining({ statusCode: 400 }));
+    expect(callback).toHaveBeenCalledWith(null, expect.objectContaining({ statusCode: 400 }))
   })
 
   // it('should return 200 if message was sent to SQS', async () => {
@@ -81,6 +81,6 @@ describe('insert new log in SQS queue', () => {
   //   mockLogValidate.mockImplementation(() => ({ value: {} }))
 
   //   log.create(event, context, callback)
-  //   expect(callback).toHaveBeenCalledWith(null, expect.objectContaining({ statusCode: 200 }));
+  //   expect(callback).toHaveBeenCalledWith(null, expect.objectContaining({ statusCode: 200 }))
   // })
 })

@@ -33,9 +33,9 @@ module.exports.getByOrigin = (
   const params = {
     TableName: process.env.DYNAMODB_TABLE as string,
     ExpressionAttributeValues: {
-      ":origin": queryStringParameters.origin
+      ':origin': queryStringParameters.origin
     },
-    FilterExpression: "origin = :origin"
+    FilterExpression: 'origin = :origin'
   }
 
   // Fetch dynamodb for data

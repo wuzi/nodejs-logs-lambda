@@ -77,16 +77,16 @@ describe('get logs by type from dynamodb', () => {
     const params = {
       TableName: '',
       ExpressionAttributeValues: {
-        ":logType": event.queryStringParameters.type
+        ':logType': event.queryStringParameters.type
       },
       ExpressionAttributeNames: {
-        "#logType": "type"
+        '#logType': 'type'
       },
-      FilterExpression: "#logType = :logType"
+      FilterExpression: '#logType = :logType'
     }
 
     log.getByType(event, context, callback)
     expect(scanMock).toBeCalledWith(params)
-    expect(callback).toHaveBeenCalledWith(null, expect.objectContaining({ statusCode: 200 }));
+    expect(callback).toHaveBeenCalledWith(null, expect.objectContaining({ statusCode: 200 }))
   })
 })

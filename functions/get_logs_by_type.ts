@@ -33,12 +33,12 @@ module.exports.getByType = (
   const params = {
     TableName: process.env.DYNAMODB_TABLE as string,
     ExpressionAttributeValues: {
-      ":logType": queryStringParameters.type
+      ':logType': queryStringParameters.type
     },
     ExpressionAttributeNames: {
-      "#logType": "type"
+      '#logType': 'type'
     },
-    FilterExpression: "#logType = :logType"
+    FilterExpression: '#logType = :logType'
   }
 
   // Fetch dynamodb for data

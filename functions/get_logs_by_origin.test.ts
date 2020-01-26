@@ -77,13 +77,13 @@ describe('get logs by origin from dynamodb', () => {
     const params = {
       TableName: '',
       ExpressionAttributeValues: {
-        ":origin": event.queryStringParameters.origin
+        ':origin': event.queryStringParameters.origin
       },
-      FilterExpression: "origin = :origin"
+      FilterExpression: 'origin = :origin'
     }
 
     log.getByOrigin(event, context, callback)
     expect(scanMock).toBeCalledWith(params)
-    expect(callback).toHaveBeenCalledWith(null, expect.objectContaining({ statusCode: 200 }));
+    expect(callback).toHaveBeenCalledWith(null, expect.objectContaining({ statusCode: 200 }))
   })
 })
