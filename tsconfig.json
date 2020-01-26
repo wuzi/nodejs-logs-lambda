@@ -6,7 +6,9 @@
     "strict": true
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "functions/**/*.test.ts",
+    "functions/**/*.spec.ts"
   ],
   "types": [
     "node",
